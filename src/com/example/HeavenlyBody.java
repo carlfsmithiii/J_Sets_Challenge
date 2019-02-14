@@ -3,7 +3,7 @@ package com.example;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class HeavenlyBody {
+public class HeavenlyBody {
     private final String name;
     private final double orbitalPeriod;
     private final Set<HeavenlyBody> satellites;
@@ -49,21 +49,27 @@ public abstract class HeavenlyBody {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
 
-        if ((obj == null) || (obj.getClass() != this.getClass())) {
-            return false;
+        if (obj instanceof HeavenlyBody) {
+            HeavenlyBody theObject = (HeavenlyBody) obj;
+            if (this.name.equals(theObject.getName())) {
+                return this.type == theObject.getType();
+            }
         }
-
-        String objName = ((HeavenlyBody) obj).getName();
-        return this.name.equals(objName);
+        return false;
     }
 
     @Override
-    public int hashCode() {
-       return this.name.hashCode() + 57 + this.type.ordinal();
+    public final int hashCode() {
+       return this.name.hashCode() + 57 + this.type.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.name + ": " + this.type + ", " + this.orbitalPeriod;
     }
 }
